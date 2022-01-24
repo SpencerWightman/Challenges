@@ -1,3 +1,4 @@
+
 =begin
 # -------------------------------------- Problem ----------------------------
 Explicit
@@ -27,39 +28,19 @@ Return desired result based on the size of the sum array
 # -------------------------------------- Code -------------------------------
 =end
 
-require 'minitest/autorun'
-require "minitest/reporters"
-Minitest::Reporters.use!
-
-class InvalidTriangle < StandardError; end
-
 class Triangle
+  attr_reader :arr
 
-  def detect(arr) # can check validity in constructor
-    raise InvalidTriangle if arr.any? { |e| e <= 0 }
-    raise InvalidTriangle if arr.any? { |e, i| e > (arr.sum - e) }
+  def initialize(num1, num2, num3)
+    @arr = [num1, num2, num3]
+    raise ArgumentError if arr.any? { |e| e <= 0 }
+    raise ArgumentError if arr.any? { |e, i| e >= (arr.sum - e) }
+  end
+
+  def kind
     return 'equilateral' if arr.uniq.size == 1
     return 'scalene' if arr.uniq.size == 3
     return 'isosceles' if arr.uniq.size == 2
   end
 
 end
-
-class TriangleTest < MiniTest::Test
-  attr_reader :triangle
-
-  def setup
-    @triangle = Triangle.new
-  end
-
-  def test_detect
-    assert_equal 'equilateral', triangle.detect([3, 3, 3])
-    assert_equal 'scalene', triangle.detect([1, 2, 3])
-    assert_equal 'isosceles', triangle.detect([3, 1, 3])
-    assert_raises(InvalidTriangle) { triangle.detect([0, 0, 0]) }
-    assert_raises(InvalidTriangle) { triangle.detect([3, 7, 3]) }
-  end
-
-end
-
-
