@@ -30,7 +30,6 @@ class SumOfMultiples
   def self.to(num)
     (3...num).to_a.select { |e| e % 3 == 0 || e % 5 == 0 }.sum
   end
-
 end
 
 # class SumOfMultiples
