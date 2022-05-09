@@ -1,5 +1,4 @@
 require 'minitest/autorun'
-require_relative 'series'
 
 class SeriesTest < Minitest::Test
   def test_simple_slices_of_one
@@ -91,5 +90,25 @@ class SeriesTest < Minitest::Test
     assert_raises ArgumentError do
       series.slices(slice_string.length + 1)
     end
+  end
+end
+
+# Solution
+
+class Series
+  attr_reader :input
+  def initialize(str)
+    @input = str.chars
+  end
+
+  def slices(num)
+    raise ArgumentError if num > input.size
+    result = []
+    input.each_with_index do |e, i|
+      break if input.slice(i...i + num).size < num
+      result << input.slice(i...i + num)
+    end
+
+    result.map {|e| e.map{|e| e.to_i}}
   end
 end

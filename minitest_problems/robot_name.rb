@@ -1,5 +1,4 @@
 require 'minitest/autorun'
-require_relative 'robot_name'
 
 class RobotTest < Minitest::Test
   DIFFERENT_ROBOT_NAME_SEED = 1234
@@ -42,5 +41,27 @@ class RobotTest < Minitest::Test
     Kernel.srand SAME_INITIAL_ROBOT_NAME_SEED
     name2 = Robot.new.name
     refute_equal name1, name2
+  end
+end
+
+# Solution
+
+class Robot
+  attr_reader :name
+
+  @@count = 1
+  def initialize
+    loop do
+      part1 = Array.new(2) { [*"A".."Z"].sample }.join
+      part2 = Array.new(3) { [*"0".."9"].sample }.join
+      @name = part1 + part2
+      break if @@count == 1 || @name != @@oldname
+    end
+    @@count += 1
+    @@oldname = @name.clone
+  end
+
+  def reset
+    @name = 'AB123'
   end
 end

@@ -1,7 +1,5 @@
 require 'minitest/autorun'
 
-require_relative 'anagram'
-
 class AnagramTest < Minitest::Test
   def test_no_matches
     detector = Anagram.new('diaper')
@@ -67,5 +65,23 @@ class AnagramTest < Minitest::Test
     detector = Anagram.new('Orchestra')
     anagrams = detector.match %w(cashregister Carthorse radishes)
     assert_equal ['Carthorse'], anagrams
+  end
+end
+
+# Solution
+
+class Anagram
+  attr_reader :string
+
+  def initialize(string)
+    @string = string
+  end
+
+  def match(arr)
+    sorted_given = string.downcase.chars.sort.join
+    arr.each_with_object([]) do |e, o|
+      o << e if e.downcase.chars.sort.join ==
+                sorted_given && e.downcase != string.downcase
+    end
   end
 end
